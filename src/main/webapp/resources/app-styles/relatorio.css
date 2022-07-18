@@ -1,0 +1,62 @@
+.card-list {
+	width: 100%;
+	max-width: 500px;
+	min-width: 300px;
+	height: 350px;
+	overflow-y: scroll;
+	border-radius: 8px;
+	background: #fff;
+	margin-bottom: 20px;
+	text-align: left;
+}
+
+.card-list .title {
+	font-size: 18px;
+	font-weight: 500;
+	color: var(--txt-color-p);
+	padding: 20px;
+	display: block;
+}
+
+body .ui-datatable thead th {
+	height: 0px;
+	padding: 0px 1rem;
+	background: transparent !important;
+}
+
+body .ui-datatable tr td:nth-child(-n+1) {
+	text-align: center !important;
+}
+
+@media screen and (max-width: 750px) {
+	.card-chart {
+		min-width: 100% !important;
+		height: auto !important;
+	}
+	.card-list {
+		min-width: 100%;
+	}
+	.main {
+		flex-direction: column;
+	}
+}
+
+.card-chart {
+	width: 100%;
+	min-width: 270px;
+	max-width: 300px;
+	height: 350px;
+	background: #fff;
+	border-radius: 8px;
+	padding: 20px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.card-chart .title {
+	font-size: 18px;
+	font-weight: 500;
+	color: var(--txt-color-p);
+}

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{request.contextPath}/resources/images/favicon.png" />
+	<title>Document</title>
+</h:head>
+<h:body>	
+	
+	<h:outputStylesheet library="app-styles" name="index.css"/>
+	<h:outputScript library="app-scripts" name="index.js"/>
+	<div class="navbar">
+		<h:form id="navbar">
+			<div class="navbar-content-background"></div>
+			<div class="content-act">
+				<div class="content-top">
+					<h1 class="title">dev.finance<span>$</span></h1>
+					<p:tabMenu activeIndex="0">
+		        		<p:menuitem value="Listagem" outcome="/app/index" icon="pi pi-list">
+		        	    	<f:param name="i" value="0"/>
+		    	    	</p:menuitem>
+			        	<p:menuitem value="Relatorio" outcome="/app/relatorio" icon="pi pi-chart-line">
+		            		<f:param name="i" value="1"/>
+		        		</p:menuitem>
+		        	</p:tabMenu>
+				</div>
+				<div class="content-bottom">
+					<div class="card-annotation">
+						<div class="head-card">
+							<p:outputLabel class="title" value="Entradas" />
+							<span class="pi pi-arrow-circle-up" />
+						</div>
+						<p:outputLabel class="value" value="R$ #{financeBean.expense}"/>
+					</div>
+					<div class="card-annotation">
+						<div class="head-card">
+							<p:outputLabel class="title" value="Saidas" />
+							<span class="pi pi-arrow-circle-down" />
+						</div>
+						<p:outputLabel class="value" value="R$ -#{financeBean.income}"/>
+					</div>
+					<div class="card-annotation">
+						<div class="head-card">
+							<p:outputLabel class="title" value="Total" />
+							<span class="pi pi-dollar" />
+						</div>
+						<p:outputLabel class="value" value="R$ #{financeBean.expense - financeBean.income}"/>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</div>
+	
+		<div class="main">
+			<div class="content-btn-finance">
+				<label class="pi pi-plus" for="btnOpnCampFinance"/>		
+				<button type="button"  id="btnOpnCampFinance" class="button-opn-camp-fincance" onclick="opnWrapperFinance()" >Nova Transação</button>
+			</div>
+			
+			<h:form id="dataList">
+				<p:dataTable value="#{financeBean.listFinances}" var="finance">
+					<p:column headerText="Descrição" sortBy="#{finance.descricao}" >
+						<h:outputText value="#{finance.descricao}"/>
+					</p:column>	
+					<p:column headerText="Preço" sortBy="#{finance.price}" >
+						<h:outputText value="#{finance.price}"/>
+					</p:column>	
+					<p:column headerText="Tipo" sortBy="#{finance.financeTypeEnum}" >
+						<h:outputText value="#{finance.financeTypeEnum}"/>
+					</p:column>	
+					<p:column headerText="Data" sortBy="#{finance.date}" >
+						<h:outputFormat value="#{finance.date}" >
+							<f:convertDateTime pattern="MM/dd/yyyy"/>
+						</h:outputFormat>
+					</p:column>	
+					<p:column headerText="Ações" style="display: flex; gap: 4px;">
+						<p:commandButton styleClass="ui-button-danger" icon="pi pi-trash" action="#{financeBean.delete(finance)}" update="dataList navbar"/>
+						<p:commandButton styleClass="ui-button-warning" icon="pi pi-pencil" action="#{financeBean.editSetInfo(finance)}" update="formCampFinance" onclick="opnWrapperFinance()"/>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	
+	
+		<div class="wrapper-camp-finance">
+			<h:form id="formCampFinance">
+				<p:outputLabel class="title" value="Nova Transação"/>	
+				<h:inputHidden value="#{financeBean.financeEntity.id}"/>
+				<p:inputText value="#{financeBean.financeEntity.descricao}" placeholder="Descrição"/>
+				<p:inputNumber value="#{financeBean.financeEntity.price}" placeholder="Informe o valor" decimalPlaces="0"/>
+				<p:calendar value="#{financeBean.financeEntity.date}" placeholder="Data"/>
+				
+				<p:selectOneMenu value="#{financeBean.financeEntity.financeTypeEnum}">
+					<f:selectItems value="#{financeBean.financeTypes}" itemValue="#{t}" var="t" itemLabel="#{t.name}"/>
+				</p:selectOneMenu>
+				
+				<p:commandButton class="btn-purple" value="Salvar" icon="pi pi-save" action="#{financeBean.save}" update="dataList navbar" onclick="opnWrapperFinance()"/>
+			</h:form>
+		</div>
+		
+</h:body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{request.contextPath}/resources/images/favicon.png" />
+	<title>Relatorio</title>
+</h:head>
+<h:body>
+	<h:outputStylesheet library="app-styles" name="index.css"/>
+	<h:outputStylesheet library="app-styles" name="relatorio.css"/>
+	
+	<div class="navbar">
+		<h:form id="navbar">
+			<div class="navbar-content-background" style="height: 100%; "></div>
+			<div class="content-act">
+				<div class="content-top">
+					<h1 class="title">dev.finance<span>$</span></h1>
+					<p:tabMenu activeIndex="1">
+		        		<p:menuitem value="Listagem" outcome="/app/index" icon="pi pi-list">
+		        	    	<f:param name="i" value="0"/>
+		    	    	</p:menuitem>
+			        	<p:menuitem value="Relatorio" outcome="/app/relatorio" icon="pi pi-chart-line">
+		            		<f:param name="i" value="1"/>
+		        		</p:menuitem>
+		        	</p:tabMenu>
+				</div>
+			</div>
+		</h:form>
+	</div>
+	
+	<div class="main" style="display: flex; gap: 20px; justify-content: center;">
+		<div class="card-chart">
+			<p:outputLabel class="title" value="Grafico de Gastos"/>
+	    	 <p:pieChart model="#{reportBean.pieModel}"/>
+		</div>
+		
+		<div style="text-align: end; margin-bottom: 20px;">
+			<div class="card-list">
+				<p:outputLabel class="title" value="Historico"/>
+					<p:dataTable value="#{reportBean.listFinances}" var="finance" id="tbl">
+						<p:column exportable="false" width="15px" >
+							<span class="#{finance.financeTypeEnum.name() == 'EXPENSE' ? 'pi pi-arrow-up' : 'pi pi-arrow-down'}"
+								style="color:#{finance.financeTypeEnum.name() == 'EXPENSE' ? 'blue' : 'red'}"/>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="#{finance.descricao}"/>
+						</p:column>
+						<p:column style="text-align: center;">
+							<p:outputLabel value="#{finance.date}">
+								<f:convertDateTime pattern="MM/dd/yyyy"/>
+							</p:outputLabel>
+						</p:column>
+						<p:column  style="text-align: end;">
+							<p:outputLabel value="#{finance.price}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+				<p:commandButton value="PDF" class="btn-purple">
+					<p:dataExporter type="pdf" target="tbl" fileName="devFinances gastos"/>
+		        </p:commandButton>
+			
+		</div>
+	</div>
+</h:body>
+</html>

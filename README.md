@@ -1,7 +1,7 @@
 # dev.finance
 Dev.Finance is a project to control personal accounts with control of receipts and payments, as well as calculation of totals, created by rocketseat.
 
-<img src="./git/display.gif" width="800">
+<img src="./git/display.gif" >
 
 ### First Steps
 - `git clone` in the project
